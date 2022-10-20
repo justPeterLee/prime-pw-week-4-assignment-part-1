@@ -229,51 +229,137 @@ getHashTags("Visualizing Science")
 
 
 /* 
+- function will take in a phrase
 
-- return 3 words (longest word)
-  - tacker 
-    - will contain an array of the current longest words and replace an old word if new word is longer
-- take a string
-  - remove all punctuation
-  - append all words into an array
+  - phrase punctuation will be removed 
+  - words will be moved into an array ( array of words )
+
+  - tracker (will keep track of the longest words)
+    - has to be in order of longest to shortest
+    - has to have # in from
+    - hash map (key = length, value = word)
+
+  -> let tracker = [#word1, #word2, #word3];
+  -> let phrase = headline.removePuncuation.toArray
 
 
-pseudo 
 
-let longest = [#word1, #word2, #word3];
-let head = headline.removePunctuation.toArray // should be an array of all the words
 
-for(i of head){
-  for(j of longest){
-    if(i.length > j.length){
-      replace j with i
-    }
-  }
-}
 
-return longest
-*/
-function hashtags(headline){
-  let longest = [];
-  let newHead = headline.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(" ");
+  - for loop/ conditional statements
+  
+    -iterate through words
+    
+      -> section 1 (while tracker has less than three words)
+        - automatically add the first word 
+        -> section 1.a (tracker has atleast 1 word)
+          - compare length of two words
+            - if larger 
+              - insert at curent index (index 0)
+            -if smaller 
+              - append (index 1)
+        -> section 1.b 
+          -> repeat 1.a
+      
+      -> section 2 ( while tracker has 3 words)
+        - same as section 1 but nore more appending, only replacing 
+      
+      ->> theory
+          - if 1 > 2 > 3 then if 4 > 1 then 4 must be > 2 and 3
 
-  for(let i = 0; i < newHead.length; i++){
-    if(longest.length < 3){
-      longest.push(`#${newHead[i]}`);
-      console.log(longest + "p")
-    }
-    else{
-      for(let j = 0; j < longest.length; j++){
-        if(newHead[i].length > longest[j].replace("#","").length){
-          for(let k =0; k < longest.length; k++){
-            if(newHead[i] === longest[k].replace("#","")){
-              continue;
+  
+  -> pseudo
+
+    -> for (words in phrase){
+        // section 1
+        switch( tracker.length < 3){
+          case tracker.length === 0:
+            tracker.push({word.length: word});
+            break;
+          case tracker.length === 1:
+            if(words[i].length > tracker[0.length]){
+              tracker.splice(0,0,{word[i].length})
+            }
+            else{
+              tracker.push({word[i].length: word[i]})
+            };
+            break;
+          case tracker.length === 2:
+            for(let i=0; i<tracker.length; i++){
+                if(words[i].length > tracker[0.length]){
+                  tracker.splice(0,0,{word[i].length})
+                  break;
+                }
+              }
+            }
+            tracker.push({word[i].length});
+            break;
+          default:
+            break;
+        }
+
+        if(tracker.length === 3){
+          for(let j=0; j < tracker.length; j++){
+            if(word[i].length > tracker[j].key){
+              if(word !=== tracker[j].value){
+                tracker.splice(j,0,{word.length: word})
+                break;
+              }
             }
           }
-          longest[j] = `#${newHead[i]}`;
+        }
+    }
+
+
+*/
+
+function hashtag(phrase){
+  let longest = [];
+  let words = phrase.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(" ");
+
+  for(let i=0; i < words.length; i++){
+    // section 1
+    if(longest.length < 3){
+      if(longest.length === 0){
+        longest.push(`#${words[i]}`);
+      }
+      else if(longest.length === 1){
+        if(longest[0].replace("#",'').length < words[i].length){
+          longest.splice(0,0,`#${words[i]}`);
+        } else{
+          longest.push(`#${words[i]}`);
+        };
+      }
+      else if(longest.length === 2){
+        for(let i2=0; i2 < longest.length; i2++){
+          if(words[i].length > longest[i2].replace('#','').length){
+            longest.splice(i2, 0, `#${words[i]}`);
+            break; 
+          }
+          longest.push(words[i]);
+        }
+        
+      }
+    }
+
+
+    if(longest.length >= 3){
+      for(let j=0; j<longest.length; j++){
+        if(words[i].length > longest[j].replace('#','').length && j === 0){
+          longest.pop();
+          longest.splice(j,0,`#${words[i]}`)
+          break;
+        }
+        else if(words[i].length > longest[j].replace('#','').length && j === 1){
+          longest.pop();
+          longest.splice(j,0,`#${words[i]}`)
+          break;
+        }
+        else if(words[i].length > longest[j].replace('#','').length && j === 2){
+          longest[j] = `#${words[i]}`
         }
       }
-    } 
+    }
   }
 
   return longest;
@@ -281,8 +367,9 @@ function hashtags(headline){
 
 let header1 = "Why You Will Probably Pay More for Your Christmas Tree This Year";
 
-console.log(hashtags(header1));
+console.log(hashtag(header1));
 
-let asd = "#k"
-console.log(asd        
-  )
+
+
+// problem 1:
+// has repeats
